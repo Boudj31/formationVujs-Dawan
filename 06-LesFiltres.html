@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les filtres</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    
+    <div id="app">
+
+        <p> {{ title | uppercase }} </p>
+        <p> {{ title | capitalize }} </p>
+        <p> {{ title | titlelize }} </p>
+        <p> {{ title | titlelizee }} </p>
+        <p> {{ title | titlelizeee }} </p>
+        <p> {{ val | isPalindrome }} </p>
+        <p> {{ val2 | isPalindrome }} </p>
+        <p> {{ val3 | isPalindrome }} </p>
+    </div>
+
+
+
+
+    <script>
+
+        Vue.filter('uppercase', function (value) {
+            if (!value) return ''; // SI la value est vide -> retourne une chaine vide
+            value = value.toString(); // On s'assure d'avoir une chaine de caractère
+            return value.toUpperCase();
+        });
+
+        Vue.filter('capitalize', function (value) {
+            if (!value) return ''; // SI la value est vide -> retourne une chaine vide
+            // On va chercher le caractère à l'index 0 -> donc le premier, on le mets en maj
+            let first_letter = value.charAt(0).toUpperCase();
+            // On met en min tous les caractère sauf le 1er
+            let other_letters = value.substr(1).toLowerCase();
+            return first_letter + other_letters;
+        });
+
+        /* Créer un filtre titlelize qui met en majuscule la première lettre chaque mot */
+        Vue.filter('titlelize', function (value) {
+            if (!value) return ''; // SI la value est vide -> retourne une chaine vide
+            let first_letter = value.toLowerCase().split(' ');
+            for (let i = 0; i < first_letter.length; i++) {
+                first_letter[i] = first_letter[i].charAt(0).toUpperCase() + first_letter[i].substring(1);     
+            }
+            return first_letter.join(' '); 
+        });
+
+        // 2eme méthode
+        Vue.filter('titlelizee', function (value) {
+            if (!value) return ''; // SI la value est vide -> retourne une chaine vide
+            // Je mets chacun de mes mots dans un tableau
+            let l_values = value.split(' ');
+            for (let i = 0; i < l_values.length; i++) {
+                l_values[i] = l_values[i].charAt(0).toUpperCase() + l_values[i].substr(1).toLowerCase();  
+            }
+            return l_values.join(' '); 
+        });
+
+        // Methode Haidar
+        Vue.filter('titlelizeee', function (value) {
+            if (!value) return ''; // SI la value est vide -> retourne une chaine vide
+            value = value.toString(); // On s'assure d'avoir une chaine de caractère
+            return value.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()); 
+        });
+
+        Vue.filter('isPalindrome', function (value) {
+            if (!value) return 'Cette chaine est vide';
+            let val = value.toLowerCase().trim();
+            let reversed = value
+                .toLowerCase() // On met en miniscule pour éviter les pb de maj
+                .trim() // On retire les espaces en début et fin de chaine
+                .split('') // On divise en tableau 
+                .reverse() // on inverse le tableau
+                .join(' '); // On transforme le tableau en string
+
+            return (reversed === val) ?
+                `${val} est un palindrome : ${reversed}`
+                : `${val} n'est pas un palindrome : ${reversed}`
+        });
+
+        const app = new Vue({
+            el: '#app',
+            data: {
+                title: 'Mon super titre',
+                val: 'Kayak',
+                val2: 'Sonic',
+                val3: 'Palindrome'
+            }
+        });
+
+
+    </script>
+
+</body>
+</html>

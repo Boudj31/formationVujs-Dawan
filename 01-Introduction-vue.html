@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Découverte de VueJS</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+
+</head>
+<body>
+
+<!-- Vue JS fonctionnera dans la div app -->
+<div id="app">
+    <p>Bonjour {{ name }} comment ça va ?</p>
+
+    <button v-on:click="changeName()">Changer de nom</button>
+
+    <!-- Grâce à Vue, on peut interpréter des opérations, et expressions directement dans le HTML -->
+    <p>1 + 1</p> <!-- Pas d'interprétation car pas de moustaches -->
+    <p>{{ 1 + 1 }}</p> <!-- Interprétation d'expression --> 
+    <p>{{ 6 > 9 }}</p> <!-- Interprétation d'un boolean : vrai / faux  -->
+    <p>{{ 6 < 9 }}</p> <!-- Interprétation d'un boolean : vrai / faux  -->
+    <p>Nous sommes le {{ date }}</p>
+    <p> {{ a * b }}</p> <!-- Opération avec des attributs Data de vue -->
+    <p>{{count}}</p>
+    <button v-on:click="incremente">+</button>
+    <button v-on:click="decremente">-</button>
+    <button v-on:click="recommencer">Restart</button>
+
+</div>
+
+<script>
+
+    /* ------- Vue JS ------ */
+
+    const app = new Vue({
+        el: '#app', // L'id de l'élément HTML dans lequel va tourner Vue
+        data: { // Une liste de valeurs à envoyer au HTML
+            name: 'Rachid',
+            title: "Découverte de VueJS",
+            date: new Date().toLocaleDateString(),
+            a: 211,
+            b : 45,
+            count : 0
+        },
+        methods : {
+            changeName: function () {
+                this.name = 'Yanis';
+            },
+            // deux syntaxe possible :
+            //nomFonction: function() {}
+            //nomFonction() {}
+            incremente() {
+                this.count += 1
+            },
+            decremente() {
+                this.count -= 1
+            },
+            recommencer() {
+                this.count = 0
+            },
+
+        }
+    });
+    console.log(app.name);
+
+</script>
+
+</body>
+</html>
